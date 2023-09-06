@@ -16,23 +16,42 @@ Sistema* create_sistema() {
     return sistema;
 }
 
-int add_sistema(int id,char name[45], char user[45], char password[45],int qtd_users,Sistema **sistema){
+int add_sistema(int id,char name[45], char user[45], char password[45],int qtd_users,Sistema *sistema){
 
 
 
 
-        *sistema = (Sistema *)realloc(*sistema, (qtd_users + 1) * sizeof(Sistema));
-        if(*sistema == NULL){    return -1; }
+        sistema = (Sistema *)realloc(sistema, (qtd_users + 1) * sizeof(Sistema));
+        if(sistema == NULL){    return -1; }
 
 
-    (*sistema)[id].ID = qtd_users +1;
-    strcpy((*sistema)[id].NAME,name);
-    strcpy((*sistema)[id].USER,user);
-    strcpy((*sistema)[id].PASS,password);
+    sistema[id].ID = qtd_users +1;
+    strcpy((sistema)[id].NAME,name);
+    strcpy((sistema)[id].USER,user);
+    strcpy((sistema)[id].PASS,password);
 
 
     return qtd_users+1;
 
+
+}
+
+int delete_sistema(char user[45], char password[45],int qtd_users,Sistema *sistema){
+    for(int i=0;i<=qtd_users;i++){
+    if(strcmp(user,sistema[i].USER) ==0 ){
+        if(strcmp(password,sistema[i].PASS)== 0){
+
+            return 1;
+        } else{
+
+            return -1;
+        }
+        break;
+    } else if(strcmp(user,sistema[i].USER) ==1 && i == qtd_users){
+
+        return -404;
+    }
+    }
 
 }
 
@@ -84,7 +103,7 @@ int main() {
 
 
 
-                num_sistema_ids = add_sistema(num_sistema_ids,nome_sistema,user_sistema,pass_sistema,num_sistema_ids,&sistema_p);
+                num_sistema_ids = add_sistema(num_sistema_ids,nome_sistema,user_sistema,pass_sistema,num_sistema_ids,sistema_p);
                 break;
             case 2: //logar, isso entrá em outro menu já logado
 
@@ -99,9 +118,7 @@ int main() {
                 setbuf(stdin, NULL);// limpando buffer para não pegar  resto de uma entrada passada
 
                 for(int i=0 ; i <= num_sistema_ids; i++){
-                    if(strcmp(user_sistema,sistema_p[i].USER) ==0 ){
-                        if(strcmp(pass_sistema,sistema_p[i].PASS)== 0){
-                            printf("Login Aprovado\n");
+
                             while(exit_menu_1 != 0){
 
                                 printf("\t \t -MENU-\n");
@@ -135,13 +152,7 @@ int main() {
                                 }
 
                             }
-                        } else{
-                            printf("Senha incorreta\n");
-                        }
-                        break;
-                    } else if(strcmp(user_sistema,sistema_p[i].USER) ==1 && i == num_sistema_ids){
-                        printf("Usuário incorreto\n");
-                    }
+
                 }
 
 
@@ -158,18 +169,15 @@ int main() {
                 printf("Digite a senha\n");
                 fgets(pass_sistema, sizeof(pass_sistema), stdin);
                 setbuf(stdin, NULL);// limpando buffer para não pegar  resto de uma entrada passada
-                for(int i=0 ; i <= num_sistema_ids; i++){
-                    if(strcmp(user_sistema,sistema_p[i].USER) ==0 ){
-                        if(strcmp(pass_sistema,sistema_p[i].PASS)== 0){
-                            sistema_p[i].ACTIVATED=0;
-                            printf("Usuário exlcuido com sucesso\n");
-                        } else{
-                            printf("Senha incorreta");
-                        }
-                        break;
-                    } else if(strcmp(user_sistema,sistema_p[i].USER) ==1 && i == num_sistema_ids){
-                        printf("Usuário não encontrado");
-                    }
+
+                log=delete_sistema(user_sistema,pass_sistema,num_sistema_ids,sistema_p);
+                if(log== 1){
+                    printf("Ecluido com sucesso");
+
+                } else if(log == -1){
+                    printf("Senha incorreta");
+                }else if(log == -404){
+                    printf("User não encontrado");
                 }
                 break;
 
