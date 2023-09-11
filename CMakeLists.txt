@@ -3,4 +3,4 @@ project(Hostel C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(Hostel main.c)
+add_executable(Hostel main.c Control-And-View/Sistema.c Control-And-View/Sistema.h)

@@ -1,59 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-typedef struct Sistema{
-    int ID; //identificador
-    char NAME[45];
-    char USER[45];
-    char PASS[45];
-    int PERMISSION;//permissões 1-total 2-parcial 3-somente busca
-    int ACTIVATED;// 0-Excluido 1-Ativo
+#include "Control-And-View/Sistema.h"
 
-}Sistema;
-
-Sistema* create_sistema() {
-    Sistema *sistema = (Sistema*)malloc(1*sizeof(Sistema));
-    return sistema;
-}
-
-int add_sistema(int id,char name[45], char user[45], char password[45],int qtd_users,Sistema *sistema){
-
-
-
-
-        sistema = (Sistema *)realloc(sistema, (qtd_users + 1) * sizeof(Sistema));
-        if(sistema == NULL){    return -1; }
-
-
-    sistema[id].ID = qtd_users +1;
-    strcpy((sistema)[id].NAME,name);
-    strcpy((sistema)[id].USER,user);
-    strcpy((sistema)[id].PASS,password);
-
-
-    return qtd_users+1;
-
-
-}
-
-int delete_sistema(char user[45], char password[45],int qtd_users,Sistema *sistema){
-    for(int i=0;i<=qtd_users;i++){
-    if(strcmp(user,sistema[i].USER) ==0 ){
-        if(strcmp(password,sistema[i].PASS)== 0){
-
-            return 1;
-        } else{
-
-            return -1;
-        }
-        break;
-    } else if(strcmp(user,sistema[i].USER) ==1 && i == qtd_users){
-
-        return -404;
-    }
-    }
-
-}
 
 
 int main() {
@@ -116,44 +65,63 @@ int main() {
                 printf("Digite a senha\n");
                 fgets(pass_sistema, sizeof(pass_sistema), stdin);
                 setbuf(stdin, NULL);// limpando buffer para não pegar  resto de uma entrada passada
+                // filtrar se tem cadastro ou não e verificar se está ativo ou não
 
-                for(int i=0 ; i <= num_sistema_ids; i++){
+                for (int i = 0; i <= num_sistema_ids; ++i) {
+                    if(strcmp(sistema_p[i].USER, user_sistema)==0){
 
-                            while(exit_menu_1 != 0){
+                        if(strcmp(sistema_p[i].PASS, pass_sistema)==0){
+                            if(sistema_p[i].ACTIVATED == 1){
+                                while(exit_menu_1 != 0){
 
-                                printf("\t \t -MENU-\n");
-                                printf("\t  9-Config\n");
-                                printf("\t  10-Exit\n");
-                                scanf("%d", &chosen);
+                                    printf("\t \t -MENU-\n");
+                                    printf("\t  9-Config\n");
+                                    printf("\t  10-Exit\n");
+                                    scanf("%d", &chosen);
 
-                                switch (chosen) {
-                                    case 9: // escolha de config
-                                        printf("\t \t -MENU-\n");
-                                        printf("\t  1-TXT\n");
-                                        printf("\t  2-BIN\n");
-                                        scanf("%d", &chosen);
-                                        switch (chosen) {
-                                            case 1:
-                                                //chamar função de salvar em txt
-                                                break;
-                                            case 2:
-                                                //chamar função de salvar em bin
-                                                break;
-                                            default:
-                                                // por padrão salva em bin
-                                                break;
-                                        }
-                                        break;
-                                    case 10:
-                                        printf("Exit Success\n");
-                                        exit_menu_1 = 0;
-                                        break;
+                                    switch (chosen) {
+                                        case 9: // escolha de config
+                                            printf("\t \t -MENU-\n");
+                                            printf("\t  1-TXT\n");
+                                            printf("\t  2-BIN\n");
+                                            scanf("%d", &chosen);
+                                            switch (chosen) {
+                                                case 1:
+                                                    //chamar função de salvar em txt
+                                                    break;
+                                                case 2:
+                                                    //chamar função de salvar em bin
+                                                    break;
+                                                default:
+                                                    // por padrão salva em bin
+                                                    break;
+                                            }
+                                            break;
+                                        case 10:
+                                            printf("Exit Success\n");
+                                            exit_menu_1 = 0;
+                                            break;
+
+                                    }
 
                                 }
-
+                            }else{
+                                printf("Usuário Excliodo\n");
+                                break;
                             }
 
+
+                        }else{
+                            printf("Senha incorreta\n");
+                            break;
+                        }
+                    }
+
                 }
+
+
+
+
 
 
 
