@@ -16,7 +16,7 @@ typedef struct Sistema{
 
 }Sistema;
 
-Sistema* create_sistema();//criar sistema
+Sistema *create_sistema(int _tamanho);//criar sistema
 int add_sistema(int id,char name[45], char user[45], char password[45],int qtd_users,Sistema *sistema);
 int delete_sistema(char user[45], char password[45],int qtd_users,Sistema *sistema);
 
